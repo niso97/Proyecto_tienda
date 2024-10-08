@@ -1,0 +1,487 @@
+/* Estilo general del cuerpo */
+body {
+    background-image: url('../IMG/fondo/fondo3.png');
+    background-position: center; /* Centra la imagen */
+    background-repeat: repeat; /* Hace que la imagen se repita */
+    font-family: 'Times New Roman', Times, serif; /* Tipo de letra */
+}
+
+/* Contenedor principal */
+#contenedor {
+    width: 100%; /* Ancho pantalla */
+    height: auto; /* Altura automática según contenido */
+    margin: 0px auto;
+    border: 0px solid lightgray;
+}
+
+/* Título principal */
+#titulo {
+    background: #8B4513; /* Color de fondo */
+    color: white; /* Color del texto */
+    padding: 10px; /* Espaciado interno */
+    text-align: center; /* Centrar el texto */
+    font-size: 2em; /* Tamaño de la fuente */
+}
+
+/* Secciones */
+section {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Tarjetas */
+.card {
+    margin-bottom: 20px; /* Espacio entre las tarjetas */
+    text-align: center;
+    align-items: center;
+    background-color: #f9e4d6; /* Color de fondo similar al de la tabla */
+    border: 2px solid #8B4513; /* Borde similar al de la tabla */
+    margin-left: 20px; /* Margen izquierdo para separar de la tabla */
+    padding: 10px; /* Espaciado interior */
+}
+.card-title {
+    color: #000000; /* Color de título similar al de la tabla */
+}
+.form-group label {
+    font-weight: bold; /* Texto en negrita para etiquetas de formulario */
+}
+
+/* Contenedores específicos */
+#contenedorregistro, #agregarcategoria, #agregarproducto, #contenedorrecuperar {
+    background: white; /* Color de fondo */
+    color: black; /* Color del texto */
+    padding: 20px; /* Espaciado interno */
+    border: 2px solid #8B4513; /* Bordes */
+    width: 30%; /* Ajusta el ancho a tu preferencia */
+    margin: 0 auto; /* Centra horizontalmente */
+    margin-top: 7%;
+    text-align: center;
+}
+
+#contenedorregistro h2, #agregarcategoria h2, #agregarproducto h2, #contenedorrecuperar h2 {
+    background: #8B4513; /* Color de fondo del título */
+    color: white; /* Color del texto del título */
+    padding: 10px; /* Espaciado interno del título */
+    margin-top: 0; /* Elimina el margen superior del título */
+    border-radius: 5px; /* Bordes redondeados del título */
+    text-align: center;
+}
+
+/* Encabezado */
+header {
+    background: #8B4513; /* Color de fondo */
+    padding: 1rem;
+}
+
+/* Estilo del carrito */
+.product-detail {
+    width: 360px;
+    padding: 24px;
+    box-sizing: border-box;
+    position: absolute;
+    right: 0;
+    margin-right: 20px; /* Sangría a la derecha */
+    background-color: #D2B48C; /* Fondo café claro */
+    border: 2px solid black; /* Borde negro */
+    background-attachment: fixed; /* Fondo fijo */
+    margin-top: 20px; /* Espaciado superior */
+    border-radius: 8px; /* Bordes redondeados */
+}
+
+/* Título del carrito */
+.title-container {
+    display: flex;
+}
+
+.title-container img {
+    transform: rotate(180deg);
+    margin-right: 14px;
+}
+
+.title {
+    font-size: 1.5em; /* Ajusta el tamaño de la fuente */
+    font-weight: bold;
+}
+
+/* Orden en el carrito */
+.order {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 16px;
+    align-items: center;
+    background-color: #FFF8DC; /* Color de fondo para orden */
+    margin-bottom: 24px;
+    border-radius: 8px;
+    padding: 0 24px;
+}
+
+.order p:nth-child(1) {
+    display: flex;
+    flex-direction: column;
+}
+
+.order p span:nth-child(1) {
+    font-size: 1em; /* Tamaño de la fuente */
+    font-weight: bold;
+}
+
+.order p:nth-child(2) {
+    text-align: end;
+    font-weight: bold;
+}
+
+/* Carrito de compras */
+.shopping-cart {
+    display: grid;
+    grid-template-columns: auto 1fr auto auto;
+    gap: 16px;
+    margin-bottom: 24px;
+    align-items: center;
+}
+
+.shopping-cart figure {
+    margin: 0;
+}
+
+.shopping-cart figure img {
+    width: 70px;
+    height: 70px;
+    border-radius: 20px;
+    object-fit: cover;
+}
+
+.shopping-cart p:nth-child(2) {
+    color: #8B4513; /* Color de texto */
+}
+
+.shopping-cart p:nth-child(3) {
+    font-size: 1em; /* Tamaño de la fuente */
+    font-weight: bold;
+}
+
+/* Botón principal */
+.primary-button {
+    background-color: #8B4513; /* Color de fondo */
+    border-radius: 8px;
+    border: none;
+    color: white; /* Color del texto */
+    width: 100%;
+    cursor: pointer;
+    font-size: 1em; /* Tamaño de la fuente */
+    font-weight: bold;
+    height: 50px;
+}
+
+@media (max-width: 640px) {
+    .product-detail {
+        width: 100%;
+        margin-right: 0; /* Eliminar sangría en pantallas pequeñas */
+    }
+}
+/* Imágenes de las tarjetas */
+.card-img-top { /*Ajustar imágenes*/
+    width: 100%;
+    height: 200px; /* Ajusta la altura según sea necesario */
+}
+
+/* Estilo para la tabla de proveedores */
+table {
+    width: 100%; /* Ancho completo */
+    border: 1px solid #8B4513; /* Borde sólido con color */
+    border-collapse: collapse; /* Colapsa los bordes de las celdas */
+    margin-bottom: 50px; /* Espacio inferior */
+}
+
+th, td {
+    padding: 12px 15px; /* Espaciado interno */
+    text-align: left; /* Alineación del texto a la izquierda */
+}
+
+th {
+    background-color: #8B4513; /* Color de fondo del encabezado */
+    color: white; /* Color del texto del encabezado */
+    font-weight: bold; /* Texto en negrita */
+}
+
+td {
+    background-color: #ffd2b3; /* Color de fondo de las celdas */
+}
+
+tr:nth-child(even) td {
+    background-color: #f2f2f2; /* Color de fondo para filas pares */
+}
+
+tr:hover td {
+    background-color: #8596b8; /* Cambio de color al pasar el mouse */
+}
+
+/* Ajustes para mejorar el contraste en el carrito */
+.shopping-cart {
+    background-color: #f1ded1; /* Cambia el color de fondo a uno más claro */
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 2px solid #000000; /* Añade un borde para separar visualmente los productos */
+    border-radius: 5px;
+}
+
+.shopping-cart img {
+    max-width: 100px; /* Limita el tamaño máximo de las imágenes en el carrito */
+    height: auto;
+    margin-bottom: 10px;
+}
+
+.shopping-cart p {
+    margin-bottom: 5px;
+}
+
+/* Estilos para el subtotal y total */
+.subtotal {
+    font-weight: bold;
+}
+
+.total {
+    font-size: 1.2em;
+    color: #dc3545; /* Color rojo para el total */
+}
+
+/* Nuevo estilo para el contenedor flexible */
+.content-flex {
+    display: flex;
+    justify-content: flex-start; /* Alinea los elementos al inicio del contenedor */
+    align-items: flex-start;
+    gap: 20px;
+}
+
+#contenedorregistro {
+    flex: 1;
+    max-width: 45%;
+}
+
+#lista-proveedores {
+    flex: 1;
+    max-width: 65%;
+    margin-left: 5%; /* Ajusta el margen para mover la tabla hacia la izquierda */
+}
+
+#lista-usuarios {
+    flex:1;
+    max-width: 45%;
+    margin-left: 5%;
+}
+
+#lista-ventas {
+    flex:1;
+    max-width: 70%;
+    margin-right: 5%;
+}
+
+.lista-pedidos{
+    flex:1;
+    max-width: 70%;
+    margin-left: 5%;
+}
+
+.lista-productos{
+    flex:1;
+    max-width: 90%;
+    margin-right: 5%;
+}
+
+/* Estilo general del cuerpo */
+body {
+    background-image: url('../IMG/fondo/fondo3.png');
+    background-position: center; /* Centra la imagen */
+    background-repeat: repeat; /* Hace que la imagen se repita */
+    font-family: 'Times New Roman', Times, serif; /* Tipo de letra */
+}
+
+/* Contenedor principal */
+#contenedor {
+    width: 100%; /* Ancho pantalla */
+    height: auto; /* Altura automática según contenido */
+    margin: 0px auto;
+    border: 0px solid lightgray;
+}
+
+/* Título principal */
+#titulo {
+    background: #8B4513; /* Color de fondo */
+    color: white; /* Color del texto */
+    padding: 10px; /* Espaciado interno */
+    text-align: center; /* Centrar el texto */
+    font-size: 2em; /* Tamaño de la fuente */
+}
+
+/* Secciones */
+section {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Tarjetas */
+.card {
+    margin-bottom: 20px; /* Espacio entre las tarjetas */
+    text-align: center;
+    align-items: center;
+    background-color: #f9e4d6; /* Color de fondo similar al de la tabla */
+    border: 2px solid #8B4513; /* Borde similar al de la tabla */
+    padding: 10px; /* Espaciado interior */
+}
+.card-title {
+    color: #000000; /* Color de título similar al de la tabla */
+}
+.form-group label {
+    font-weight: bold; /* Texto en negrita para etiquetas de formulario */
+}
+
+/* Contenedores específicos */
+#contenedorregistro, #agregarcategoria, #agregarproducto, #contenedorrecuperar {
+    background: white; /* Color de fondo */
+    color: black; /* Color del texto */
+    padding: 20px; /* Espaciado interno */
+    border: 2px solid #8B4513; /* Bordes */
+    margin: 0 auto; /* Centra horizontalmente */
+    margin-top: 7%;
+    text-align: center;
+}
+
+#contenedorregistro h2, #agregarcategoria h2, #agregarproducto h2, #contenedorrecuperar h2 {
+    background: #8B4513; /* Color de fondo del título */
+    color: white; /* Color del texto del título */
+    padding: 10px; /* Espaciado interno del título */
+    margin-top: 0; /* Elimina el margen superior del título */
+    border-radius: 5px; /* Bordes redondeados del título */
+    text-align: center;
+}
+
+/* Encabezado */
+header {
+    background: #8B4513; /* Color de fondo */
+    padding: 1rem;
+}
+
+/* Estilo del carrito */
+.product-detail {
+    width: 360px;
+    padding: 24px;
+    box-sizing: border-box;
+    position: absolute;
+    right: 0;
+    margin-right: 20px; /* Sangría a la derecha */
+    background-color: #D2B48C; /* Color de fondo */
+    border: 2px solid #8B4513; /* Borde similar a la tabla */
+    z-index: 1000; /* Asegura que el carrito se superponga al contenido principal */
+}
+
+/* Estilos de botones */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #8B4513; /* Color de fondo de la barra de navegación */
+    padding: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra para darle un efecto elevado */
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+    color: #fff;
+    text-decoration: none;
+}
+
+.navbar-nav {
+    list-style: none;
+    display: flex;
+    gap: 1rem; /* Espacio entre los enlaces */
+}
+
+.navbar-nav a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1.1rem;
+}
+
+.navbar-nav a:hover {
+    text-decoration: underline;
+}
+
+/* Personalización de la tabla */
+.table th {
+    background-color: #8B4513; /* Fondo para el encabezado de la tabla */
+    color: #fff; /* Texto blanco */
+}
+.table td {
+    background-color: #f9e4d6; /* Fondo para las celdas de la tabla */
+}
+
+/* Estilo para la sección de registro */
+#contenedorregistro {
+    background: white; /* Color de fondo */
+    color: black; /* Color del texto */
+    padding: 20px; /* Espaciado interno */
+    border: 2px solid #8B4513; /* Borde */
+    border-radius: 10px; /* Bordes redondeados */
+    margin-bottom: 20px; /* Espacio inferior */
+}
+
+h2 {
+    font-family: 'Arial', sans-serif;
+    font-size: 2em;
+    color: #fff; /* Color de la letra */
+    text-align: center;
+    margin: 20px 0;
+    padding: 10px;
+    border-bottom: 2px solid #fff;
+    background-color: #8B4513; /* Color de fondo */
+    border-radius: 5px; /* Esquinas redondeadas */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* Estilo para todos los botones */
+.btn {
+    font-family: 'Arial', sans-serif;
+    font-size: 1em;
+    color: #fff; /* Color del texto */
+    background-color: #925e38; /* Color de fondo */
+    border: none; /* Sin borde */
+    border-radius: 5px; /* Bordes redondeados */
+    padding: 10px 20px; /* Espaciado interno */
+    cursor: pointer; /* Cursor de puntero al pasar sobre el botón */
+    text-align: center; /* Alineación del texto */
+    text-decoration: none; /* Sin subrayado */
+    display: inline-block; /* Mostrar en línea */
+    transition: background-color 0.3s ease; /* Transición suave */
+}
+
+/* Centrar el contenedor del nav */
+nav {
+    display: flex; /* Usar flexbox para centrar */
+    justify-content: center; /* Centrar horizontalmente */
+    align-items: center; /* Centrar verticalmente */
+    background-color: rgba(255, 255, 255, 0.5); /* Fondo blanco con transparencia */
+    padding: 10px; /* Espaciado interno opcional */
+    margin: 20px 0; /* Espaciado externo opcional */
+    border-radius: 5px; /* Bordes redondeados opcionales */
+
+}
+
+/* Opcional: estilos para los enlaces dentro del nav */
+nav a {
+    margin: 0 10px; /* Espacio entre enlaces */
+    text-decoration: none; /* Sin subrayado */
+    color: #007bff; /* Color del texto */
+}
+
+nav a:hover {
+    color: #0056b3; /* Color del texto al pasar el ratón */
+}

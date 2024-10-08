@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Descuentos</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/estilo.css') }}">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+        th {
+            cursor: pointer;
+        }
+        .card {
+            margin-right: 20px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="titulo">
+        <h1>Tienda Don Juan Perico</h1>
+    </div>
+
+    <nav>
+        <a href="{{ url_for('pedidosinv_bp.admin') }}" class="btn btn-primary">ADMIN</a>
+        <a href="{{ url_for('addproveedores_bp.registro') }}" class="btn btn-primary">Proveedores</a>
+        <a href="{{ url_for('factura_bp.mostrar_factura') }}" class="btn btn-primary">Facturas</a>
+        <a href="{{ url_for('categoria_bp.mostrar_categoria') }}" class="btn btn-primary">Categorias</a>
+        <a href="{{ url_for('producto_bp.mostrar_producto') }}" class="btn btn-primary">Productos</a>
+        <a href="{{ url_for('marca_bp.mostrar_marcas') }}" class="btn btn-primary">Marcas</a>
+        <a href="{{ url_for('descuentos_bp.descuentos') }}" class="btn btn-primary">Descuentos</a>
+    </nav>
+
+    {% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <h2>Descuentos</h2>
+                <table id="productos-grid" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th onclick="sortTable(0)">Nombre</th>
+                            <th onclick="sortTable(1)">Código</th>
+                            <th onclick="sortTable(2)">Descuento</th>
+                            <th onclick="sortTable(3)">Categoría</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for producto in productos %}
+                        <tr>
+                            <td>{{ producto.nombre }}</td>
+                            <td>{{ producto.codigo_prod }}</td>
+                            <td>{{ producto.descuento }}</td>
+                            <td>{{ producto.categoria }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-6">
+                <div class="card mt-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Modificar Descuento</h5>
+                        <form id="update-discount-form">
+                            <div class="form-group">
+                                <label for="product-code">Código de Producto:</label>
+                                <input type="text" class="form-control" id="product-code" name="product_code" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="discount">Seleccionar Descuento:</label>
+                                <select class="form-control" id="discount" name="discount">
+                                    <option value="0">0%</option>
+                                    <option value="5">5%</option>
+                                    <option value="10">10%</option>
+                                    <option value="15">15%</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Aplicar Descuento</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+    <script>
+        function sortTable(column) {
+            const table = document.getElementById('productos-grid').getElementsByTagName('tbody')[0];
+            const rows = Array.from(table.rows);
+            const isNumericColumn = column === 1;
+
+            rows.sort((a, b) => {
+                const cellA = a.cells[column].innerText;
+                const cellB = b.cells[column].innerText;
+
+                if (isNumericColumn) {
+                    return parseInt(cellA) - parseInt(cellB);
+                } else {
+                    return cellA.localeCompare(cellB);
+                }
+            });
+
+            rows.forEach(row => table.appendChild(row));
+        }
+
+        document.getElementById('update-discount-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const productCode = document.getElementById('product-code').value;
+            const discount = document.getElementById('discount').value;
+
+            fetch('/update_discount', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ product_code: productCode, discount: discount }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Descuento actualizado correctamente.');
+                    location.reload();
+                } else {
+                    alert('Error al actualizar el descuento.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    </script>
+</body>
+</html>

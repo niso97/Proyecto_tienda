@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tienda - {{ nombre_usuario }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='CSS/estilo.css') }}">
+    <!-- Antes de cualquier script que use jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+</head>
+
+<body>
+    <div id="titulo">
+        <h1>Tienda Don Juan Perico - {{ nombre_usuario }}</h1>
+    </div>
+
+    <div>
+        <form class="position-absolute top-0 end-0 m-3" action="{{ url_for('index_bp.index') }}">
+            <button type="submit" class="btn">Cerrar Sesion</button>
+        </form>
+    </div>
+
+    <div class="container mt-5">
+        <div class="row">
+            <!-- Tarjetas de productos ocupan 2/3 de la pantalla -->
+            <div class="col-md-8">
+                <div class="row">
+                    {% for producto in products %}
+                    {% if producto.existencias > 0 %}
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            <img src="{{ url_for('static', filename='IMG/productos/' ~ producto.imagen) }}"
+                                class="card-img-top" alt="Imagen del Producto">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ producto.nombre }}</h5>
+                                <p class="card-text">Precio: ${{ producto.precio }}</p>
+                                {% if producto.descuento > 0 %}
+                                <p class="card-text">Descuento: {{ producto.descuento }}%</p>
+                                <p class="card-text">Precio con Descuento: ${{ producto.precio * (1 - producto.descuento / 100) }}</p>
+                                {% endif %}
+                                <p class="card-text">Existencias: {{ producto.existencias }}</p>
+                                <form action="{{ url_for('carrito_bp.add_to_cart', codigo_prod=producto.codigo_prod) }}"
+                                    method="POST">
+                                    <button type="submit" class="btn btn-primary">Agregar al carrito</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Espacio para el carrito -->
+            <div class="col-md-4">
+                <!-- carrito de compras -->
+                <aside class="product-detail">
+                    <div class="title-container">
+                        <p class="title">Mi pedido</p>
+                    </div>
+
+                    <div class="my-order-content">
+                        {% set subtotal = session.get('subtotal_pedido', 0) %}
+                        {% set total_descuento = session.get('total_descuento', 0) %}
+                        {% set total_pedido = session.get('total_pedido', 0) %}
+
+                        {% for item in cart %}
+                        <div class="shopping-cart">
+                            <figure>
+                                <img src="{{ item['imagen'] }}" alt="{{ item['nombre'] }}">
+                            </figure>
+                            <p>{{ item['nombre'] }}</p>
+                            <p>Precio unitario: ${{ item['precio'] }}</p>
+                            <p>Cantidad: {{ item['cantidad'] }}</p>
+                            <form
+                                action="{{ url_for('carrito_bp.increase_quantity', codigo_prod=item['codigo_prod']) }}"
+                                method="POST" style="display: inline-block;">
+                                <button type="submit" class="btn btn-success">+</button>
+                            </form>
+                            <form
+                                action="{{ url_for('carrito_bp.decrease_quantity', codigo_prod=item['codigo_prod']) }}"
+                                method="POST" style="display: inline-block;">
+                                <button type="submit" class="btn btn-warning">-</button>
+                            </form>
+                            <form
+                                action="{{ url_for('carrito_bp.remove_from_cart', codigo_prod=item['codigo_prod']) }}"
+                                method="POST" style="display: inline-block;">
+                                <button type="submit" class="btn btn-danger">Eliminar</button>
+                            </form>
+                        </div>
+                        {% endfor %}
+
+                        <div class="subtotal-total">
+                            <p>Subtotal: ${{ subtotal }}</p>
+                            {% if total_descuento > 0 %}
+                            <p>Descuento Aplicado: {{ total_descuento }}%</p>
+                            {% endif %}
+                            <p>Total a Pagar: ${{ total_pedido }}</p>
+                        </div>
+
+                        <!-- Botón de Checkout -->
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                            data-bs-target="#checkoutModal">Confirmar Pedido</button>
+
+                    </div>
+                </aside>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Modal de Confirmación de Pedido -->
+        <div class="modal fade" id="checkoutModal" tabindex="-1" aria-labelledby="checkoutModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="checkoutModalLabel">Resumen del Pedido</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Aquí se mostrarán los productos del carrito -->
+                        {% for item in cart %}
+                        <div class="mb-3">
+                            <p>{{ item['nombre'] }} - Cantidad: {{ item['cantidad'] }}</p>
+                            <p>Precio unitario: ${{ item['precio'] }}</p>
+                            <hr>
+                        </div>
+                        {% endfor %}
+                        <p class="fw-bold">Total a Pagar: ${{ total_pedido }}</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="button" id="confirmarPedidoBtn" class="btn btn-primary">Confirmar Pedido</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            $(document).ready(function () {
+                $('#confirmarPedidoBtn').click(function () {
+                    $.ajax({
+                        url: '{{ url_for("carrito_bp.checkout") }}',
+                        type: 'POST',
+                        data: {},
+                        success: function (response) {
+                            console.log('Pedido confirmado exitosamente');
+                            window.location.href = "{{ url_for('cliente_bp.cliente') }}";
+                        },
+                        error: function (xhr, status, error) {
+                            console.error('Error al confirmar pedido:', error);
+                        }
+                    });
+                });
+            });
+        </script>
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        // Función para actualizar totales del carrito
+        function updateCartTotals() {
+            $.ajax({
+                url: "{{ url_for('carrito_bp.update_cart_totals') }}",
+                type: 'GET',
+                success: function (response) {
+                    $('#subtotal_pedido').text('$' + response.subtotal.toFixed(2));
+                    $('#total_descuento').text('$' + response.total_descuento.toFixed(2));
+                    $('#total_pedido').text('$' + response.total_pedido.toFixed(2));
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error al actualizar totales:', error);
+                }
+            });
+        }
+
+        // Llamar a la función para actualizar totales al cargar la página
+        $(document).ready(function () {
+            updateCartTotals();
+        });
+    </script>
+
+</body>
+
+</html>

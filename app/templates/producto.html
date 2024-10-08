@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tienda Don Juan Perico</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/estilo.css') }}">
+</head>
+
+<body>
+    <main>
+        <div id="titulo" class="text-center">
+            <h1>Tienda Don Juan Perico</h1>
+        </div>
+
+        <nav>
+            <a href="{{ url_for('pedidosinv_bp.admin') }}" class="btn btn-primary">ADMIN</a>
+            <a href="{{ url_for('addproveedores_bp.registro') }}" class="btn btn-primary">Proveedores</a>
+            <a href="{{ url_for('factura_bp.mostrar_factura') }}" class="btn btn-primary">Facturas</a>
+            <a href="{{ url_for('categoria_bp.mostrar_categoria') }}" class="btn btn-primary">Categorias</a>
+            <a href="{{ url_for('producto_bp.mostrar_producto') }}" class="btn btn-primary">Productos</a>
+            <a href="{{ url_for('marca_bp.mostrar_marcas') }}" class="btn btn-primary">Marcas</a>
+            <a href="{{ url_for('descuentos_bp.descuentos') }}" class="btn btn-primary">Descuentos</a>
+        </nav>
+        
+        <div class="container mt-5">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="alert alert-warning">
+                        {% for category, message in messages %}
+                            <p>{{ message }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+            <div class="row">
+                <!-- Formulario Agregar Producto -->
+                <div class="col-md-4">
+                    <h2>Agregar Producto</h2>
+                    <form method="post" action="{{ url_for('producto_bp.agregar_producto') }}" enctype="multipart/form-data">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="nombre_producto" name="nombre_producto" placeholder="Nombre del Producto" required>
+                            <label for="nombre_producto">Nombre del Producto</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="number" class="form-control" id="precio" name="precio" placeholder="Precio" required>
+                            <label for="precio">Precio</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="marca" name="marca" placeholder="Marca" required>
+                            <label for="marca">Marca</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="codigo_categoria" name="codigo_categoria" placeholder="Código de Categoría" required>
+                            <label for="codigo_categoria">Código de Categoría</label>
+                        </div>
+                        <div class="mb-3">
+                            <label for="imagen" class="form-label">Imagen del Producto</label>
+                            <input type="file" id="imagen" name="imagen" accept="image/*" required><br>
+                        </div>
+                        <button class="btn btn-primary mb-2" type="submit">Agregar</button>
+                    </form>
+                    
+                    <!-- Formulario Modificar Producto -->
+                    <h2>Modificar Producto</h2>
+                    <form method="post" action="{{ url_for('producto_bp.modificar_producto') }}" enctype="multipart/form-data">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="codigo_prod" name="codigo_prod" placeholder="Código del Producto" required>
+                            <label for="codigo_prod">Código del Producto a Modificar</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="nombre_producto_mod" name="nombre_producto_mod" placeholder="Nuevo Nombre">
+                            <label for="nombre_producto_mod">Nuevo Nombre</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="number" class="form-control" id="precio_mod" name="precio_mod" placeholder="Nuevo Precio">
+                            <label for="precio_mod">Nuevo Precio</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="marca_mod" name="marca_mod" placeholder="Nueva Marca">
+                            <label for="marca_mod">Nueva Marca</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="codigo_categoria_mod" name="codigo_categoria_mod" placeholder="Nuevo Código de Categoría">
+                            <label for="codigo_categoria_mod">Nuevo Código de Categoría</label>
+                        </div>
+                        <div class="mb-3">
+                            <label for="imagen_mod" class="form-label">Nueva Imagen del Producto</label>
+                            <input type="file" id="imagen_mod" name="imagen_mod" accept="image/*"><br>
+                        </div>
+                        <button class="btn btn-primary mb-2" type="submit">Modificar</button>
+                    </form>
+                </div>
+
+                <!-- Lista de Productos -->
+                <div class="col-md-8">
+                    <h2>Lista de Productos</h2>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Código</th>
+                                <th>Nombre</th>
+                                <th>Precio</th>
+                                <th>Marca</th>
+                                <th>Categoría</th>
+                                <th>Imagen</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for prod in productos %}
+                            <tr>
+                                <td>{{ prod.codigo_prod }}</td>
+                                <td>{{ prod.nombre }}</td>
+                                <td>{{ prod.precio }}</td>
+                                <td>{{ prod.marca }}</td>
+                                <td>{{ prod.categoria }}</td>
+                                <td><img src="{{ url_for('static', filename='IMG/productos/' ~ prod.imagen) }}" alt="Imagen de {{ prod.nombre }}" class="img-thumbnail" width="50"></td>
+                                <td>
+                                    <form method="post" action="{{ url_for('producto_bp.eliminar_producto', codigo_prod=prod.codigo_prod) }}" style="display:inline;">
+                                        <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+
+<footer></footer>
+
+</html>
